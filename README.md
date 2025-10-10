@@ -8,7 +8,7 @@ This code example has a three project structure: CM33 secure, CM33 non-secure, a
 
 [View this README on GitHub.](https://github.com/Infineon/mtb-example-psoc-edge-wifi-https-server)
 
-[Provide feedback on this code example.](https://cypress.co1.qualtrics.com/jfe/form/SV_1NTns53sK2yiljn?Q_EED=eyJVbmlxdWUgRG9jIElkIjoiQ0UyNDAyNTIiLCJTcGVjIE51bWJlciI6IjAwMi00MDI1MiIsIkRvYyBUaXRsZSI6IlBTT0MmdHJhZGU7IEVkZ2UgTUNVOiBIVFRQUyBTZXJ2ZXIiLCJyaWQiOiJzdXJlc2hrdW1hcmEiLCJEb2MgdmVyc2lvbiI6IjIuMC4wIiwiRG9jIExhbmd1YWdlIjoiRW5nbGlzaCIsIkRvYyBEaXZpc2lvbiI6Ik1DRCIsIkRvYyBCVSI6IklDVyIsIkRvYyBGYW1pbHkiOiJQU09DIn0=)
+[Provide feedback on this code example.](https://cypress.co1.qualtrics.com/jfe/form/SV_1NTns53sK2yiljn?Q_EED=eyJVbmlxdWUgRG9jIElkIjoiQ0UyNDAyNTIiLCJTcGVjIE51bWJlciI6IjAwMi00MDI1MiIsIkRvYyBUaXRsZSI6IlBTT0MmdHJhZGU7IEVkZ2UgTUNVOiBIVFRQUyBTZXJ2ZXIiLCJyaWQiOiJzdXJlc2hrdW1hcmEiLCJEb2MgdmVyc2lvbiI6IjIuMS4wIiwiRG9jIExhbmd1YWdlIjoiRW5nbGlzaCIsIkRvYyBEaXZpc2lvbiI6Ik1DRCIsIkRvYyBCVSI6IklDVyIsIkRvYyBGYW1pbHkiOiJQU09DIn0=)
 
 See the [Design and implementation](docs/design_and_implementation.md) for the functional description of this code example.
 
@@ -33,6 +33,7 @@ See the [Design and implementation](docs/design_and_implementation.md) for the f
 
 - [PSOC&trade; Edge E84 Evaluation Kit](https://www.infineon.com/KIT_PSE84_EVAL) (`KIT_PSE84_EVAL_EPC2`) – Default value of `TARGET`
 - [PSOC&trade; Edge E84 Evaluation Kit](https://www.infineon.com/KIT_PSE84_EVAL) (`KIT_PSE84_EVAL_EPC4`)
+- [PSOC&trade; Edge E84 AI Kit](https://www.infineon.com/KIT_PSE84_AI) (`KIT_PSE84_AI`)
 
 
 ## Hardware setup
@@ -42,6 +43,8 @@ This example uses the board's default configuration. See the kit user guide to e
 Ensure the following jumper and pin configuration on board.
 - BOOT SW must be in the HIGH/ON position
 - J20 and J21 must be in the tristate/not connected (NC) position
+
+> **Note:** This hardware setup is not required for KIT_PSE84_AI.
 
 
 ## Software setup
@@ -69,7 +72,7 @@ See [Using the code example](docs/using_the_code_example.md) for instructions on
 
    1. Modify `keySERVER_CERTIFICATE_PEM` with the contents from the *mysecurehttpserver.local.crt* file generated in **Step 3**
    2. Modify `keySERVER_PRIVATE_KEY_PEM` with the contents from the *mysecurehttpserver.local.key* file generated in **Step 3**
-   3. Modify `keyCLIENT_ROOTCA_PEM` with the contents from the *rootCA.crt* file generated in **Step 3**
+   3. Modify `keyCLIENT_ROOTCA_PEM` with the contents from the *root_ca.crt* file generated in **Step 3**
 
 5. Open a terminal program and select the KitProg3 COM port. Set the serial port parameters to 8N1 and 115200 baud
 
@@ -79,13 +82,13 @@ See [Using the code example](docs/using_the_code_example.md) for instructions on
 
    ![](images/terminal-output.png)
 
-7. The client needs to install *rootCA.crt* to trust the HTTPS website and its own certificate *mysecurehttpclient.pfx*. The *.pfx* file bundles the client certificate and key in PKCS format
+7. The client needs to install *root_ca.crt* to trust the HTTPS website and its own certificate *mysecurehttpclient.pfx*. The *.pfx* file bundles the client certificate and key in PKCS format
 
    Do the following to install the certificates on the client machine. In this code example, the HTTPS Server has two types of clients: one uses the cURL utility while the other uses a web browser
 
    - **cURL utility:**
 
-      - Ensure that the *cURL* utility has access to the *rootCA.crt*, *mysecurehttpclient.crt*, and *mysecurehttpclient.key* files generated in **Step 3** of the [operation](#operation) section. cURL commands can be invoked from anywhere in the modus-shell. The command takes the argument, such as `--cacert`, `--cert`, and `--key`, which indicates the file path to *rootCA.crt*, *mysecurehttpclient.crt*, and *mysecurehttpclient.key* respectively. See the [Using the cURL utility](#using-the-curl-utility) section for details on how to run cURL commands
+      - Ensure that the *cURL* utility has access to the *root_ca.crt*, *mysecurehttpclient.crt*, and *mysecurehttpclient.key* files generated in **Step 3** of the [operation](#operation) section. cURL commands can be invoked from anywhere in the modus-shell. The command takes the argument, such as `--cacert`, `--cert`, and `--key`, which indicates the file path to *root_ca.crt*, *mysecurehttpclient.crt*, and *mysecurehttpclient.key* respectively. See the [Using the cURL utility](#using-the-curl-utility) section for details on how to run cURL commands
 
    - **Web browser:**
 
@@ -96,10 +99,10 @@ See [Using the code example](docs/using_the_code_example.md) for instructions on
          2. Find the **Certificates** section and then click **View Certificates** <br>
             The browser displays the Certificate Manager dialog
 
-         3. Click **Import** and select the *rootCA.crt* file generated in **Step 3** of the [operation](#operation) section and click **Open**
+         3. Click **Import** and select the *root_ca.crt* file generated in **Step 3** of the [operation](#operation) section and click **Open**
 
          4. Select **Trust this certificate authority** to identify websites and email users and click **OK** <br>
-            The *rootCA.crt* is now installed
+            The *root_ca.crt* is now installed
 
          5. Similarly, import the client certificate *mysecurehttpclient.pfx* file, generated in **Step 3** of the [operation](#operation) section, under **Your Certificates** on the Certificate Manager window. The certificate is generated with an empty password; therefore, leave it empty if it asks for a password during import
 
@@ -112,12 +115,12 @@ See [Using the code example](docs/using_the_code_example.md) for instructions on
 
          3. Go to **Action** > **All Tasks** > **Import** and click **Next**
 
-         4. Select the *rootCA.crt* file generated in **Step 3** of the [operation](#operation) section. Ensure to change the file type to **All Files** to find the *rootCA.crt* file. Click **Open**
+         4. Select the *root_ca.crt* file generated in **Step 3** of the [operation](#operation) section. Ensure to change the file type to **All Files** to find the *root_ca.crt* file. Click **Open**
 
          5. Select the certification store as **Trusted Root Certification Authorities** and click **Finish**
 
-         6. Click **Yes** to the security warning window to acknowledge that you trust *rootCA.crt* to allow its websites and email user <br>
-            The **rootCA.crt** is now installed
+         6. Click **Yes** to the security warning window to acknowledge that you trust *root_ca.crt* to allow its websites and email user <br>
+            The **root_ca.crt** is now installed
 
          7. Similarly, import the client certificate *mysecurehttpclient.pfx* file, generated in **Step 3** of the [operation](#operation) section, under the **Personal** category
 
@@ -127,10 +130,10 @@ See [Using the code example](docs/using_the_code_example.md) for instructions on
 
          2. In the Certificate Manager window, click **Import** under the **Authorities** tab
 
-         3. Select the *rootCA.crt* file generated in **Step 3** of the [operation](#operation) section. Make sure to change the file type to **All Files** to find the *rootCA.crt* file. Click **Open**
+         3. Select the *root_ca.crt* file generated in **Step 3** of the [operation](#operation) section. Make sure to change the file type to **All Files** to find the *root_ca.crt* file. Click **Open**
 
          4. **Select** Trust this certificate authority to identify websites and email users and click **OK** <br>
-            The *rootCA.crt* is now installed
+            The *root_ca.crt* is now installed
 
          5. Similarly, import the client certificate *mysecurehttpclient.pfx* file, generated in **Step 3** of the [operation](#operation), under the **Personal** category
 
@@ -140,7 +143,7 @@ See [Using the code example](docs/using_the_code_example.md) for instructions on
 
          2. Select the **System** keychain
 
-         3. Open **File** > **Import Items**, and import the certificate file *rootCA.crt*, generated in **Step 3** of the [operation](#operation) section,  into the **System** keychain
+         3. Open **File** > **Import Items**, and import the certificate file *root_ca.crt*, generated in **Step 3** of the [operation](#operation) section,  into the **System** keychain
 
          4. Right-click the certificate and select **Get Info** <br>
             A certificate information window displays
@@ -188,10 +191,10 @@ See [Using the code example](docs/using_the_code_example.md) for instructions on
 
 1. Open modus-shell application (*{ModusToolbox&trade; install directory}/tools_\<version>/modus-shell/Cygwin.bat*)
 
-2. Set the path to *rootCA.crt*, *mysecurehttpclient.crt*, and *mysecurehttpclient.key* in a variable:
+2. Set the path to *root_ca.crt*, *mysecurehttpclient.crt*, and *mysecurehttpclient.key* in a variable:
 
    ```
-   PATH_TO_ROOTCA="<Path to rootCA.crt file>"
+   PATH_TO_ROOTCA="<Path to root_ca.crt file>"
    ```
 
    ```
@@ -277,13 +280,13 @@ File                           | Description
 -------------------------------|------------
 *mysecurehttpserver.local.crt* | HTTPS Server certificate
 *mysecurehttpserver.local.key* | HTTPS Server private key
-*rootCA.crt* | HTTPS Server rootCA certificate to trust the client
-*rootCA.key* | HTTPS Server root key used for signing the certificate
+*root_ca.crt* | HTTPS Server root_ca certificate to trust the client
+*root_ca.key* | HTTPS Server root key used for signing the certificate
 *mysecurehttpclient.crt* | HTTPS Client certificate
 *mysecurehttpclient.key* | HTTPS Client key
 *mysecurehttpclient.pfx* | Bundles the HTTPS Client certificate and key in PKCS12 format
 
-Configure the HTTPS Server to take *mysecurehttpserver.local.crt* as the certificate, *mysecurehttpserver.local.key* as the private key, and *rootCA.crt* as the rootCA certificate.
+Configure the HTTPS Server to take *mysecurehttpserver.local.crt* as the certificate, *mysecurehttpserver.local.key* as the private key, and *root_ca.crt* as the root_ca certificate.
 
 You can either convert the values to strings manually by following the format shown in *proj_cm33_ns/source/secure_keys.h* or use the *format_cert_key.py* python file inside *script folder* to convert the certificates and keys to strings by running the below command.
 
@@ -291,7 +294,7 @@ You can either convert the values to strings manually by following the format sh
 python format_cert_key.py <certificate/key name with extension>
 ```
 
-Install the *rootCA.crt* and *mysecurehttpclient.pfx* on the web browser clients, which are trying to communicate with the HTTPS Server. With *cURL*, the *rootCA.crt*, *mysecurehttpclient.crt*, and *mysecurehttpclient.key* can be passed as command-line arguments.
+Install the *root_ca.crt* and *mysecurehttpclient.pfx* on the web browser clients, which are trying to communicate with the HTTPS Server. With *cURL*, the *root_ca.crt*, *mysecurehttpclient.crt*, and *mysecurehttpclient.key* can be passed as command-line arguments.
 
 
 ## Related resources
@@ -321,6 +324,7 @@ Document title: *CE240252* – *PSOC&trade; Edge MCU: HTTPS Server*
  ------- | ---------------------
  1.x.0   | New code example <br> Early access release
  2.0.0   | GitHub release
+ 2.1.0   | Added KIT_PSE84_AI BSP support
 <br>
 
 
